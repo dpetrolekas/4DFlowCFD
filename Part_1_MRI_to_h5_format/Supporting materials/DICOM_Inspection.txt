@@ -1,0 +1,31 @@
+#DICOM inspection script (See Sequence names, etc.)
+import pydicom
+import os
+
+def check_dicom_sequence_name(dicom_dir):
+    # Get the file paths of DICOM files in the directory
+    dicom_files = [f for f in os.listdir(dicom_dir) if f.endswith('.dcm')]
+
+    for dicom_file in dicom_files:
+        dicom_path = os.path.join(dicom_dir, dicom_file)
+        
+        # Read the DICOM file
+        ds = pydicom.dcmread(dicom_path)
+
+        # Print the file name
+        print(f"\nDICOM File: {dicom_file}")
+        
+        # Print the SequenceName if it exists
+        sequence_name = getattr(ds, 'SequenceName', 'SequenceName not found')
+        print(f"SequenceName: {sequence_name}")
+
+        # Optionally, print more attributes for inspection
+        print(f"Modality: {ds.Modality}")
+        print(f"Patient Name: {ds.PatientName}")
+        print(f"Study Date: {ds.StudyDate}")
+        print(f"Series Description: {ds.SeriesDescription}")
+        print(f"Image Position Patient: {ds.ImagePositionPatient}")
+
+# Usage: pass your DICOM directory
+dicom_directory = r"Your_Path\Magnitude_AP_M_\0"
+check_dicom_sequence_name(dicom_directory)

@@ -1,0 +1,28 @@
+#DICOM VENC and Velocity Direction Extraction script
+def read_venc_from_dicom(dicom_path):
+    ds = pydicom.dcmread(dicom_path)
+
+    # Get PC Velocity field (2001, 101a)
+    pc_velocity = ds.get((0x2001, 0x101a), None)
+    if pc_velocity:
+        venc = pc_velocity.value  # Get the VENC value
+        print(f"VENC found: {venc}")
+    else:
+        print("PC Velocity (VENC) not found")
+
+    # Use SeriesDescription to get direction (e.g., AP, RL, FH)
+    series_description = ds.SeriesDescription
+    if "AP" in series_description:
+        direction = "Anterior-Posterior (AP)"
+    elif "RL" in series_description:
+        direction = "Right-Left (RL)"
+    elif "FH" in series_description:
+        direction = "Foot-Head (FH)"
+    else:
+        direction = "Unknown direction"
+
+    print(f"Velocity Direction: {direction}")
+
+# Example usage
+dicom_file = r"C:\Users\storm\OneDrive\Desktop\Code_MRI\Test_Case\Magnitude_AP_M_\0\Mag (0001).dcm"
+read_venc_from_dicom(dicom_file)

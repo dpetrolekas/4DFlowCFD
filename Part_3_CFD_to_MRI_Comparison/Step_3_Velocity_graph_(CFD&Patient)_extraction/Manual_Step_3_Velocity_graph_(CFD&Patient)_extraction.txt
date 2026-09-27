@@ -1,0 +1,87 @@
+Step 3 — Velocity Graph (CFD & Patient) Extraction
+
+This step extracts representative velocity profiles from the patient 4D Flow MRI data and the CFD results using the same type of spatial ROI. The patient and CFD velocity components are processed, transformed where necessary to use the same coordinate system, and stored in text files. The resulting profiles are then aligned in time and compared through plots and percentage-error calculations.
+
+Step 1 — Extract Patient Velocity Profiles
+
+Load the patient HDF5 velocity data and, for each timestep, extract the selected axial slice and apply an elliptical region of interest (ROI).
+
+Calculate the mean velocity within the ROI for the u, v, and w components at every timestep and plot their variation over time.
+
+Purpose: obtain representative patient velocity profiles from the same spatial location throughout the cardiac cycle.
+
+Step 2 — Transform the Patient Coordinate System
+
+Apply the required coordinate transformation to the extracted patient velocity components so that they match the CFD simulation coordinate system.
+
+The transformed components are defined according to the required axis mapping, and the original and transformed profiles are plotted for verification.
+
+Purpose: ensure that the patient and CFD velocity components have the same coordinate orientation before comparison.
+
+Step 3 — Save the Patient Velocity Data
+
+Save the transformed patient u, v, and w velocity components for every timestep in a tab-separated text file, with one row per timestep.
+
+The file contains the timestep number and the three transformed velocity components.
+
+Purpose: create a structured patient velocity dataset that can be directly compared with the CFD results.
+
+Step 4 — Extract CFD Velocity Profiles
+
+Load the downsampled CFD velocity data and, for each timestep, extract the selected CFD slice and apply the corresponding elliptical ROI.
+
+Calculate the mean u, v, and w velocity components within the ROI for every timestep and store the resulting values.
+
+Purpose: obtain CFD velocity profiles from a spatial region corresponding to the patient-data extraction.
+
+Step 5 — Plot the CFD Velocity Profiles
+
+Plot the extracted mean u, v, and w CFD velocity components as separate time-dependent graphs over the complete cardiac cycle.
+
+Display the selected CFD slice and ROI for visual verification before generating the component plots.
+
+Purpose: visualize the CFD velocity profiles and verify that the extracted data are suitable for comparison.
+
+Step 6 — Save the CFD Velocity Data
+
+Save the extracted CFD u, v, and w velocity components for every timestep in a tab-separated text file using the same structure as the patient velocity file.
+
+Store one row per timestep with the three velocity components at sufficient numerical precision.
+
+Purpose: create the CFD velocity dataset in the same format as the patient data for direct comparison.
+
+Step 7 — Match the Temporal Resolution
+
+Load the patient velocity data and, when required, use linear interpolation to resample the patient u, v, and w profiles to the timestep sequence of the CFD data.
+
+Save the interpolated patient velocity profiles in a new text file with the same structure as the original data.
+
+Purpose: match the temporal resolution of the patient and CFD datasets before direct comparison.
+
+Step 8 — Compare Patient and CFD Velocity Profiles
+
+Load the patient and CFD velocity data and scale their timestep indices to the corresponding cardiac-cycle time range, so both datasets use the same time axis.
+
+Generate separate comparison plots for the u, v, and w components, showing the patient and CFD profiles on the same axes with common y-axis limits.
+
+Purpose: visually assess the agreement and differences between the patient and CFD velocity profiles over the cardiac cycle.
+
+Step 9 — Calculate Maximum and Minimum Velocity Errors
+
+Determine the maximum and minimum values of each velocity component (u, v, and w) for both the patient and CFD datasets.
+
+Calculate the percentage difference between the corresponding CFD and patient maximum and minimum values.
+
+Purpose: quantitatively compare the extreme velocity values of the patient and CFD profiles for each velocity component.
+
+Step 10 — Compare Multiple CFD Platforms
+
+Load the patient velocity data together with the CFD results from SimVascular and CRIMSON, and scale all datasets to the same cardiac-cycle time range.
+
+Generate separate comparison plots for the u, v, and w components, showing the patient, SimVascular, and CRIMSON profiles on the same axes.
+
+Purpose: visually compare the velocity profiles obtained from the patient measurements and the two CFD platforms over the cardiac cycle.
+
+Final Output
+
+At the end of this process, the patient and CFD velocity profiles have been extracted from corresponding spatial ROIs, transformed to the same coordinate system, aligned in time, and stored in a common text-based format. The workflow provides both visual comparisons of the velocity components and quantitative comparisons of their maximum and minimum values, allowing the patient data to be compared with CFD results from SimVascular and CRIMSON.

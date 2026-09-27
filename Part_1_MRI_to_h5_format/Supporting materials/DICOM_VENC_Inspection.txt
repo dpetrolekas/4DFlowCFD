@@ -1,0 +1,44 @@
+#DICOM VENC Inspection
+import pydicom
+import os
+
+def inspect_dicom_venc_and_velocity(dicom_dir):
+    # Get the list of DICOM files in the directory
+    dicom_files = [f for f in os.listdir(dicom_dir) if f.endswith('.dcm')]
+
+    for dicom_file in dicom_files:
+        dicom_path = os.path.join(dicom_dir, dicom_file)
+        
+        # Read the DICOM file
+        ds = pydicom.dcmread(dicom_path)
+        
+        print(f"\nInspecting DICOM file: {dicom_file}")
+        
+        # Check for SequenceName, which might contain VENC and direction
+        sequence_name = getattr(ds, 'SequenceName', 'Not found')
+        print(f"SequenceName: {sequence_name}")
+        
+        # Search through all DICOM tags for VENC or velocity-related information
+        for elem in ds:
+            # Look for any tag that might relate to VENC or velocity
+            if 'venc' in str(elem).lower() or 'velocity' in str(elem).lower() or 'direction' in str(elem).lower():
+                print(f"Potential VENC/Velocity info: {elem}")
+
+        # Optionally, print a few more known fields that might contain relevant information
+        # You can add or remove fields based on your DICOM data structure
+        print(f"Modality: {ds.Modality}")
+        print(f"Series Description: {getattr(ds, 'SeriesDescription', 'Not found')}")
+        print(f"Study Description: {getattr(ds, 'StudyDescription', 'Not found')}")
+
+        # Print all pixel-related information for deeper insights
+        print(f"Pixel Spacing: {getattr(ds, 'PixelSpacing', 'Not found')}")
+        print(f"Image Position Patient: {getattr(ds, 'ImagePositionPatient', 'Not found')}")
+        print(f"Image Orientation Patient: {getattr(ds, 'ImageOrientationPatient', 'Not found')}")
+        
+        # Stop after a few files to avoid too much output (you can adjust this)
+        if dicom_files.index(dicom_file) >= 2:
+            break
+
+# Usage: Set your DICOM directory here
+dicom_directory = r"C:\Users\storm\OneDrive\Desktop\Code_MRI\Test_Case\Phase_RL_P_\0"
+inspect_dicom_venc_and_velocity(dicom_directory)

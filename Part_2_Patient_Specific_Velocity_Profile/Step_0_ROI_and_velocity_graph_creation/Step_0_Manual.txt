@@ -1,0 +1,158 @@
+# 4D Flow MRI Velocity Data Processing
+
+## 1. ROI Selection and Velocity Visualization
+
+The first code loads the `v` velocity component from the HDF5 file and selects a specific spatial slice.
+
+An elliptical ROI is defined on the selected slice using a predefined center, size, and rotation angle.
+
+The code displays the selected slice together with the elliptical ROI and shows the velocity values inside the ROI.
+
+**Purpose:**  
+To define and visually check the ROI that will be used for the following analyses.
+
+---
+
+## 2. Pixel-wise Flow-Rate Calculation
+
+The second code uses the same elliptical ROI and extracts the velocity values inside it.
+
+Each velocity value is multiplied by the corresponding pixel area to calculate the flow contribution of each pixel.
+
+**Purpose:**  
+To examine the contribution of the individual pixels inside the ROI to the flow.
+
+---
+
+## 3. Patient-Specific Velocity Waveform
+
+The next code applies the same ROI to all cardiac timesteps.
+
+For each timestep, the velocity values inside the ROI are averaged.
+
+This produces a time-dependent velocity waveform over the cardiac cycle.
+
+**Purpose:**  
+To obtain the temporal evolution of the ROI-averaged velocity.
+
+---
+
+## 4. Flow-Rate Analysis
+
+A similar code applies the ROI to all cardiac timesteps and calculates the mean value of the selected velocity component.
+
+The values are stored for every timestep to examine their variation throughout the cardiac cycle.
+
+**Purpose:**  
+To analyze the temporal variation of the selected velocity component.
+
+---
+
+## 5. Three-Component Velocity Analysis
+
+The next code performs the same analysis for all three velocity components:
+
+- `u`
+- `v`
+- `w`
+
+For every cardiac timestep, the mean value inside the ROI is calculated for each component.
+
+**Purpose:**  
+To obtain the three velocity components over the cardiac cycle.
+
+---
+
+## 6. Velocity Component Comparison
+
+The calculated `u`, `v`, and `w` values are plotted together as a function of cardiac timestep.
+
+The numerical values are also printed in the console.
+
+**Purpose:**  
+To compare the temporal behavior of the three velocity components.
+
+---
+
+## 7. Export of Velocity Components
+
+The calculated `u`, `v`, and `w` values are saved in a text file:
+
+`velocity_components_ascending.txt`
+
+The file contains the velocity components for each cardiac timestep.
+
+**Purpose:**  
+To save the patient-specific velocity data in a simple format for further processing.
+
+---
+
+## 8. Export of the Selected Velocity Waveform
+
+The `v` velocity component is calculated for all cardiac timesteps and saved in:
+
+`flowrate_ascending.txt`
+
+The file contains one value for each timestep.
+
+**Purpose:**  
+To save the selected velocity waveform for further use.
+
+---
+
+## 9. Export of Converted Flow-Rate Data
+
+The values from the selected velocity waveform are multiplied by \(10^6\) and saved in:
+
+`flowrate_ascending_cm3.txt`
+
+**Purpose:**  
+To prepare the extracted data in the format used by the subsequent workflow.
+
+---
+
+## 10. Optional 2D Velocity Visualization
+
+This code visualizes the spatial distribution of the `v` velocity component inside the ROI.
+
+For each cardiac timestep, the velocity values are interpolated to create a continuous 2D velocity map.
+
+**Purpose:**  
+To visually inspect the velocity distribution within the ROI throughout the cardiac cycle.
+
+---
+
+## 11. Optional 3D Velocity Visualization
+
+This code creates an interactive 3D representation of the `v` velocity distribution inside the ROI.
+
+A separate interactive HTML file is generated for each cardiac timestep.
+
+**Purpose:**  
+To inspect the spatial velocity distribution interactively in 3D.
+
+---
+
+# 12. Overall Workflow
+
+The codes can be summarized as:
+
+```text
+4D Flow MRI HDF5 data
+        ↓
+Select velocity component
+        ↓
+Select spatial slice
+        ↓
+Define elliptical ROI
+        ↓
+Calculate velocity values
+        ↓
+Analyze u, v and w
+        ↓
+Export velocity data
+        ↓
+Optional 2D / 3D visualization
+```
+
+The exported velocity data can then be used in the subsequent steps of the patient-specific CFD workflow.

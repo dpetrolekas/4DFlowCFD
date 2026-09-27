@@ -1,0 +1,31 @@
+Step 2 — Downsampling
+
+This step reduces the spatial resolution of the CFD velocity fields to match the resolution of the 4D Flow MRI data. The CFD dataset is first separated into individual timesteps, each timestep is downsampled using the same imaging-related parameters, and the resulting data are then combined into a single HDF5 file.
+
+Step 1 — Create an HDF5 File for Each Timestep
+
+Read the complete CFD HDF5 dataset and separate the velocity data into individual HDF5 files, one for each timestep.
+
+Each file contains the corresponding U, V, W, and maximum velocity values, together with the common mask and grid-spacing information.
+
+Purpose: prepare the CFD data in a timestep-by-timestep format for the downsampling process.
+
+Step 2 — Apply Downsampling to Each Timestep
+
+For each timestep, load the U, V, W velocity fields and CFD mask, and prepare the magnitude data used by the 4D Flow MRI downsampling process.
+
+Apply the FFT-based downsampling to each velocity component using the specified VENC, SNR, and spatial downsampling factor, and downsample the mask to the same resolution.
+
+Purpose: simulate the lower spatial resolution and imaging characteristics of 4D Flow MRI so that the CFD velocity fields can be compared on an equivalent resolution.
+
+Step 3 — Combine the Downsampled Timesteps
+
+Collect the downsampled U, V, W velocity fields, magnitude data, VENC values, and SNR values from all individual timestep files.
+
+Combine them into a single HDF5 file, while also storing the common downsampled mask.
+
+Purpose: reconstruct the complete time-dependent CFD dataset in one HDF5 file after downsampling, ready for the subsequent CFD–MRI comparison.
+
+Final Output
+
+At the end of this process, the CFD results are available as a single HDF5 dataset with the spatial resolution reduced to match the 4D Flow MRI data. The file contains the downsampled velocity fields for the complete cardiac cycle, together with the corresponding magnitude data, VENC, SNR, and mask information, and is ready for the CFD–MRI comparison and error quantification.

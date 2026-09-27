@@ -1,0 +1,39 @@
+#DICOM Metadata and Tag Inspection
+mport pydicom
+import os
+
+def get_filepaths(directory):
+    """
+    Generate the file names in a directory tree.
+    """
+    file_paths = []
+    for root, _, files in os.walk(directory):
+        for filename in files:
+            if filename.lower().endswith('.dcm'):  # Ensure we are only reading DICOM files
+                filepath = os.path.join(root, filename)
+                file_paths.append(filepath)
+    return file_paths
+
+def read_dicom_tags(directory):
+    # Get all DICOM file paths in the directory
+    dicom_files = get_filepaths(directory)
+    
+    for dicom_file in dicom_files:
+        print(f"Inspecting {dicom_file}")
+        ds = pydicom.dcmread(dicom_file)
+
+        # Print relevant tags
+        print("DICOM Tags and Values:")
+        for elem in ds:
+            # elem is a DataElement object; access its properties
+            tag = elem.tag
+            description = elem.name
+            value = elem.value
+            
+            print(f"Tag: {tag}, Description: {description}, Value: {value}")
+        print("\n")
+
+if __name__ == '__main__':
+    # Specify the directory containing your DICOM files
+    dicom_directory = 'C:\\Users\\storm\\OneDrive\\Desktop\\4dFlow\\StudyDir_11102024034642\\ST1\\S2'
+    read_dicom_tags(dicom_directory)

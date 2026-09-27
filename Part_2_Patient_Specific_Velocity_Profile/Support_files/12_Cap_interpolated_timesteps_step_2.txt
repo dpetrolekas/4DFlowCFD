@@ -1,0 +1,3 @@
+aligned_comp_0:
+x, y, z, u, v, w
+....

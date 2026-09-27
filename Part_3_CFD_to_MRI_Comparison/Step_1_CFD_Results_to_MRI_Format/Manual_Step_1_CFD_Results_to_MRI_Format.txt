@@ -1,0 +1,71 @@
+Step 1 — Convert CFD Results to MRI-Compatible Format
+
+This step converts the CFD results into the same data format and units used by the 4D Flow MRI data. The CFD velocity fields are first mapped onto the MRI grid and stored in an HDF5 file. The CFD flow region is then defined using a time-averaged mask, and the velocity units are converted to match the MRI data.
+
+Step 1 — Extract CFD Coordinates and Velocity Components
+
+Read the CFD results from all VTU files and extract the coordinates of each mesh point together with its three velocity components.
+
+For each timestep, save the extracted X, Y, Z, U, V, W data in a separate text file.
+
+Purpose: convert the CFD results into a simple format that can be used in the following processing steps.
+
+Step 2 — Create the HDF5 File
+
+Create a regular 3D grid using the spatial limits and resolution of the 4D Flow MRI data, then assign each CFD point to its nearest grid point and store its U, V, W velocity components for every timestep.
+
+Calculate the maximum value of each velocity component for each timestep and store the velocity fields, maximum values, grid spacing, and an initial mask in the HDF5 file to resemble the structure of the same 4D Flow MRI file.
+
+Purpose: convert the CFD results from individual point-based text files into a time-dependent, MRI-compatible HDF5 dataset on the same regular grid.
+
+Step 3 — Inspect the HDF5 File and Save the Initial Mask
+
+Inspect the HDF5 file to verify its datasets, dimensions, and stored data, and specifically examine the initial mask.
+
+Extract the initial mask and save it separately as a reference before modifying the mask in the following steps.
+
+Purpose: verify the created HDF5 dataset and preserve the original mask before replacing it with the CFD-based mask.
+
+Step 4 — Calculate Velocity Magnitude
+
+Calculate the velocity magnitude at every grid point for each timestep using the three velocity components: ( |V|=\sqrt{U^2+V^2+W^2} ).
+
+Store the resulting velocity-magnitude fields for all timesteps in a separate HDF5 dataset.
+
+Purpose: obtain a single measure of flow velocity at each grid point, which is used to identify where CFD flow is present or absent.
+
+Step 5 — Create a New CFD Mask
+
+Create a mask for each timestep based on the velocity magnitude: grid points with zero velocity are assigned 0, while points with non-zero velocity are assigned 1.
+
+Store all timestep-specific masks in a new HDF5 file.
+
+Purpose: distinguish the regions where CFD flow is present from regions with no CFD flow for the subsequent processing steps.
+
+Step 6 — Create the Time-Averaged Mask
+
+Average the timestep-specific masks over the entire cardiac cycle to create one common spatial mask.
+
+The resulting mask represents the fraction of timesteps in which CFD flow is present at each grid point and is stored as a separate HDF5 dataset.
+
+Purpose: provide a stable common flow region for the CFD–MRI comparison instead of allowing the mask to change at every timestep.
+
+Step 7 — Replace the Original Mask
+
+Replace the original mask in the main HDF5 file with the time-averaged CFD mask created in the previous step.
+
+Keep the velocity data and all other datasets unchanged, and verify the contents of the updated HDF5 file.
+
+Purpose: make the time-averaged mask the final mask used for the subsequent CFD–MRI processing and comparison.
+
+Step 8 — Convert Velocity Units
+
+Convert the CFD velocity components and their corresponding maximum values from cm/s to m/s by dividing the values by 100.
+
+Apply the conversion to the U, V, W, U_max, V_max, and W_max datasets, then verify the updated HDF5 file.
+
+Purpose: ensure that the CFD velocity data use the same units as the 4D Flow MRI data for the subsequent comparison.
+
+Final Output
+
+At the end of this process, the CFD results are available as an HDF5 dataset on the MRI-compatible regular grid, containing the velocity fields, maximum velocity values, grid information, and the final time-averaged CFD mask, with velocity units matched to the MRI data. The dataset is therefore ready for the subsequent CFD–MRI processing and comparison steps.

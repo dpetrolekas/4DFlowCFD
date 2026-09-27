@@ -1,0 +1,30 @@
+#DICOM Sequence Name Correction for 4D Flow MRI (Optional)
+import os
+import pydicom
+
+# Define the main folder and the attribute details
+main_folder = r"C:\Users\storm\OneDrive\Desktop\Code_MRI\MRI_V2\Test_Case_v2\Phase_RL_P_"
+attribute_group = (0x0018, 0x0024)  # (Group, Element)
+attribute_value = "fl4d1_v180rl"
+
+# Function to add an attribute to DICOM files
+def add_dicom_attribute(folder):
+    for dirpath, _, files in os.walk(folder):
+        for file in files:
+            if file.lower().endswith('.dcm'):  # Check for DICOM files
+                file_path = os.path.join(dirpath, file)
+                try:
+                    # Read the DICOM file
+                    ds = pydicom.dcmread(file_path)
+                    
+                    # Add the new attribute
+                    ds.add_new(attribute_group, 'LO', attribute_value)  # 'LO' for Long String
+                    
+                    # Save the modified DICOM file
+                    ds.save_as(file_path)
+                    print(f"Updated {file_path} with Sequence Name: {attribute_value}")
+                except Exception as e:
+                    print(f"Failed to process {file_path}: {e}")
+
+# Call the function
+add_dicom_attribute(main_folder)
