@@ -20,9 +20,4 @@ The CFD dataset is then prepared for spatial downsampling. This method is based 
 Finally, representative velocity profiles are extracted from both the original patient 4D Flow MRI data and the downsampled CFD results. For the patient data, the required axial slice is selected and an elliptical ROI is applied to calculate the mean u, v and w velocity components for every timestep. The original velocity components are transformed to the CFD coordinate system and the resulting profiles are saved in a tab-separated text file. The corresponding slice and elliptical ROI are then applied to the CFD data to obtain the mean u, v and w velocity components for every timestep, which are saved using the same data format. When required, the original profiles are linearly interpolated to match the CFD temporal resolution. Separate comparison plots are generated for the u, v and w components, allowing the original and CFD velocity profiles to be compared over the complete cardiac cycle. The maximum and minimum values of each velocity component are determined for both datasets and the corresponding percentage differences are calculated.
 
 ## License
-This repository contains both original code and code derived from third-party software, which are subject to different licenses.
-
-* **Original code developed for this project:** Licensed under the [PolyForm Noncommercial License 1.0.0](https://polyformproject.org/licenses/noncommercial/1.0.0). See [`LICENSE.md`](LICENSE.md) for the complete license terms.
-* **Code derived from [4DFlowNet](https://github.com/EdwardFerdian/4DFlowNet/):** Licensed under the [MIT License](https://opensource.org/license/mit/). See [`THIRD-PARTY LICENSE.md`](THIRD-PARTY%20LICENSE.md) for the applicable license and attribution.
-
-The PolyForm Noncommercial License applies **only to the original code developed for this project** and does not apply to the third-party 4DFlowNet code. The 4DFlowNet-derived code remains subject to the MIT License and its original copyright and license terms.
+This repository contains both original code and code derived from third-party software, which are subject to same licenses.
