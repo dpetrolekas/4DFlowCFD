@@ -1,4 +1,4 @@
-# 4DFlowCFD-Toolkit
+# 4DFlowCFD
 Open-source framework for MRI-informed cardiovascular CFD, providing patient-specific boundary condition implementation, CFD-to-MRI reconstruction and validation of hemodynamic simulations against in vivo 4D Flow MRI.
 
 ## Part 1: 4D Flow MRI (DICOM) to HDF5 format
